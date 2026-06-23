@@ -50,7 +50,7 @@
 
       <!-- card grid -->
       <div style="flex:1; display:flex; align-items:center; padding:0 32px;">
-        <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:20px; width:100%;">
+        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:24px; width:100%;">
           <sc-for list="{{ cards }}" as="card" hint-placeholder-count="3">
             <div onClick="{{ card.open }}" onMouseEnter="{{ card.hoverOn }}" onMouseLeave="{{ card.hoverOff }}"
                  style="{{ card.shellStyle }}">
@@ -106,12 +106,6 @@
           <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; pointer-events:none;">
             <span style="font-weight:400; font-size:15px; color:#00E5FF; opacity:0.7;">{{ current.instruction }}</span>
           </div>
-        </sc-if>
-
-        <!-- restart button (cone snail only) -->
-        <sc-if value="{{ current.hasRestart }}" hint-placeholder-val="{{ false }}">
-          <div onClick="{{ restart }}" onMouseEnter="{{ restartHoverOn }}" onMouseLeave="{{ restartHoverOff }}"
-               style="{{ restartStyle }}">Restart ↺</div>
         </sc-if>
 
         <!-- parameter panel -->
@@ -194,12 +188,11 @@ class Component extends DCLogic {
     theme: 'dark',
     activeIdx: 0,
     hoverIdx: -1,
-    visited: [false, false, false, false],
+    visited: [false, false, false],
     interacted: false,
     revealed: false,
     backHover: false,
     revealHover: false,
-    restartHover: false,
     togHover: false,
     infoOpen: false,
     infoHover: false,
@@ -211,7 +204,6 @@ class Component extends DCLogic {
       flow:   { count: 600, scale: 1.0, pull: 1.0, speed: 1.0 },
       wave:   { speed: 1.0, swell: 1.0, rock: 1.0 },
       ripple: { wavelength: 34, speed: 1.0, decay: 1.0 },
-      rule30: { cell: 4, speed: 1, rule: 30 },
     },
   };
 
@@ -258,20 +250,6 @@ class Component extends DCLogic {
         "Munch said the blood-red sky over Oslo made him feel nature itself was screaming — here that scream spreads outward as overlapping waves.",
       ],
     },
-    {
-      title: 'Cone Snail Shell', meta: 'Conus textile · natural',
-      crumb: 'Cone Snail Shell · Conus textile',
-      instruction: 'Press restart to begin', hasRestart: true, interactOn: 'restart',
-      sentence: "This pattern wasn't designed. A mollusc grew it, one row of cells at a time, using rules almost identical to what you just watched.",
-      mode: 'rule30', img: 'assets/images/cone-snail.jpg', artLabel: '[ artwork: cone-snail.jpg ]',
-      algoName: 'Rule 30 · cellular automaton',
-      about: 'Each new row is built from the one above it using a single fixed rule about a cell and its two neighbours. From that tiny rule, complex patterns appear — no designer, no plan.',
-      facts: [
-        'Rule 30 was discovered by Stephen Wolfram in 1983 and is famous for producing chaos from total simplicity.',
-        'It was used as a random-number generator in Mathematica for years.',
-        "The Conus textile sea snail grows almost this exact pattern on its shell, one row of pigment cells at a time.",
-      ],
-    },
   ];
 
   canvasEl = null;
@@ -309,7 +287,6 @@ class Component extends DCLogic {
         px: 0, py: 0, life: Math.random() * 200,
       });
     }
-    if (mode === 'rule30') this.initRule30();
     if (mode === 'ripple') {
       this.sources = [
         { x: c.width * 0.36, y: c.height * 0.42, t0: 0 },
@@ -362,44 +339,12 @@ class Component extends DCLogic {
     return Math.sin(x * 0.004 + t * 0.0006) * 1.4 + Math.cos(y * 0.004 - t * 0.0004) * 1.4 + Math.sin((x + y) * 0.003);
   }
 
-  initRule30() {
-    const c = this.canvasEl;
-    this.cell = this.state.params.rule30.cell;
-    this.cols = Math.floor(c.width / this.cell);
-    this.row = new Array(this.cols).fill(0);
-    this.row[Math.floor(this.cols / 2)] = 1;
-    this.curY = 0;
-    const ctx = c.getContext('2d');
-    ctx.clearRect(0, 0, c.width, c.height);
-  }
-
   step(mode) {
     const c = this.canvasEl; if (!c) return;
     const ctx = c.getContext('2d');
     this.t += 16;
 
     const color = this.state.particleColor;
-    if (mode === 'rule30') {
-      const rule = this.state.params.rule30.rule;
-      const rows = this.state.params.rule30.speed;
-      ctx.shadowBlur = 5; ctx.shadowColor = color; ctx.fillStyle = color;
-      for (let n = 0; n < rows; n++) {
-        if (this.curY * this.cell > c.height) { ctx.shadowBlur = 0; return; }
-        const y = this.curY * this.cell;
-        for (let i = 0; i < this.cols; i++) {
-          if (this.row[i]) { ctx.fillRect(i * this.cell, y, this.cell - 0.5, this.cell - 0.5); }
-        }
-        const nr = new Array(this.cols).fill(0);
-        for (let i = 0; i < this.cols; i++) {
-          const l = this.row[(i - 1 + this.cols) % this.cols], m = this.row[i], r = this.row[(i + 1) % this.cols];
-          nr[i] = (rule >> ((l << 2) | (m << 1) | r)) & 1;
-        }
-        this.row = nr; this.curY++;
-      }
-      ctx.shadowBlur = 0;
-      return;
-    }
-
     if (mode === 'ripple') {
       const P = this.state.params.ripple;
       const cell = 8;
@@ -498,15 +443,10 @@ class Component extends DCLogic {
     setTimeout(() => this.setState({ sentenceVisible: true }), 3000);
   }
 
-  doRestart() {
-    this.setState({ interacted: true }, () => { if (this.canvasEl) this.initRule30(); });
-  }
-
   setParam(mode, key, val) {
     const params = { ...this.state.params, [mode]: { ...this.state.params[mode], [key]: val } };
     this.setState({ params }, () => {
       if (mode === 'flow' && key === 'count') this.rebuildParticles(val);
-      if (mode === 'rule30' && (key === 'cell' || key === 'rule')) { if (this.canvasEl) this.initRule30(); }
     });
   }
 
@@ -536,11 +476,6 @@ class Component extends DCLogic {
       { key: 'wavelength', label: 'Wavelength', min: 14, max: 90, step: 2, fmt: v => v + 'px' },
       { key: 'speed',      label: 'Wave speed', min: 0.2, max: 3, step: 0.1, fmt: v => v.toFixed(1) + '×' },
       { key: 'decay',      label: 'Damping', min: 0.3, max: 3, step: 0.1, fmt: v => v.toFixed(1) + '×' },
-    ],
-    rule30: [
-      { key: 'rule',  label: 'Rule', min: 0, max: 255, step: 1, fmt: v => v },
-      { key: 'cell',  label: 'Cell size', min: 2, max: 10, step: 1, fmt: v => v + 'px' },
-      { key: 'speed', label: 'Draw speed', min: 1, max: 6, step: 1, fmt: v => v + '×' },
     ],
   };
 
@@ -608,7 +543,6 @@ class Component extends DCLogic {
 
       goHome: () => this.goHome(),
       reveal: () => this.doReveal(),
-      restart: () => this.doRestart(),
       toggleTheme: () => this.setState({ theme: s.theme === 'dark' ? 'light' : 'dark' }),
       togLabel: s.theme === 'dark' ? 'Light' : 'Dark',
       togStyle: togBase + togHover,
@@ -623,10 +557,6 @@ class Component extends DCLogic {
       revealBtnStyle: `font-weight:600; font-size:15px; color:var(--accent); border:1.5px solid var(--accent); background:${s.revealHover ? '#001A22' : 'transparent'}; border-radius:24px; padding:10px 32px; cursor:pointer; animation:hp-pulse 2.5s ease-in-out infinite;`,
 
       revealTextStyle: `font-weight:400; font-size:14px; color:#FFB300; text-align:center; max-width:560px; line-height:1.5; transition:opacity 1s; opacity:${s.sentenceVisible ? 1 : 0};`,
-
-      restartHoverOn: () => this.setState({ restartHover: true }),
-      restartHoverOff: () => this.setState({ restartHover: false }),
-      restartStyle: `position:absolute; top:12px; right:12px; font-weight:400; font-size:13px; color:#00E5FF; border:1px solid #00E5FF; background:${s.restartHover ? '#001A1A' : 'transparent'}; border-radius:4px; padding:6px 14px; cursor:pointer; white-space:nowrap;`,
     };
   }
 }

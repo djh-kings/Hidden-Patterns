@@ -11,7 +11,6 @@ Drop in these four files (public domain), keeping the exact names:
 | `starry-night.jpg`| The Starry Night — Van Gogh 1889| Wikimedia: *Van Gogh - Starry Night*            |
 | `great-wave.jpg`  | The Great Wave — Hokusai 1831   | Wikimedia: *The Great Wave off Kanagawa*        |
 | `the-scream.jpg`  | The Scream — Munch 1893         | Wikimedia: *The Scream*                         |
-| `cone-snail.jpg`  | Cone Snail Shell — Conus textile| Wikimedia: *Conus textile*                      |
 
 Recommended: landscape-ish crops, ~1400px wide, optimised JPEG.
 
