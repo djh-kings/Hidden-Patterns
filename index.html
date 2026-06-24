@@ -560,20 +560,31 @@ The simulation renders this literally. Multiple wave sources generate overlappin
   // Per-painting defaults: tuned so the algorithm output resembles the
   // original painting as closely as possible. Edit these to refine the
   // match for each work.
+  // Per-painting defaults: the configuration where the algorithm most
+  // resembles the original painting. Reasoned from the simulation maths
+  // (see step()/field()), anchored to the original 1.0 baseline:
+  //   Starry Night — angle = field·π·scale; scale≈1.0–1.1 gives Van Gogh's
+  //     large coherent swirls, higher values fracture into noise. Slightly
+  //     denser particle count reads like the thick impasto.
+  //   Great Wave  — swell sets the vertical roll of a rightward current;
+  //     ~1.5 gives a clean rolling crest without erratic curl-back.
+  //   The Scream  — swirl warps the stacked bands; ~1.2 at the normal band
+  //     spacing keeps Munch's bold undulation without the bands crossing
+  //     into chaos. Slow drift suits the hypnotic sky.
   DEFAULTS_BY_INDEX = {
-    0: { // Starry Night — dense, high turbulence, moderate speed
-      params:  { flow: { count: 850, scale: 1.6, pull: 1.0, speed: 0.9 } },
-      artOpacity: 0.45,
+    0: { // Starry Night
+      params:  { flow: { count: 700, scale: 1.1, pull: 1.0, speed: 1.0 } },
+      artOpacity: 0.40,
       color: '#00E5FF',
     },
-    1: { // Great Wave — strong rolling swell, rocks divert the current
-      params:  { wave: { speed: 1.2, swell: 1.7, rock: 1.5 } },
-      artOpacity: 0.45,
+    1: { // Great Wave
+      params:  { wave: { speed: 1.15, swell: 1.5, rock: 1.0 } },
+      artOpacity: 0.40,
       color: '#00E5FF',
     },
-    2: { // The Scream — slow undulating bands, strong swirl
-      params:  { ripple: { spacing: 42, speed: 0.7, swirl: 1.4 } },
-      artOpacity: 0.45,
+    2: { // The Scream
+      params:  { ripple: { spacing: 46, speed: 0.8, swirl: 1.2 } },
+      artOpacity: 0.40,
       color: '#FFB300',
     },
   };
