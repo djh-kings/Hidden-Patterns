@@ -122,6 +122,7 @@
             </sc-for>
           </div>
         </div>
+        <div onClick="{{ reset }}" onMouseEnter="{{ resetHoverOn }}" onMouseLeave="{{ resetHoverOff }}" style="{{ resetStyle }}">↺ Reset</div>
       </div>
 
       <!-- body: stage (left) + docked reading drawer (right) -->
@@ -146,9 +147,6 @@
               <span style="font-weight:400; font-size:15px; color:#00E5FF; background:rgba(6,6,12,0.55); padding:8px 16px; border-radius:20px;">{{ current.instruction }}</span>
             </div>
           </sc-if>
-
-          <!-- reset: re-seed particles / clear rocks & taps -->
-          <div onClick="{{ reset }}" onMouseEnter="{{ resetHoverOn }}" onMouseLeave="{{ resetHoverOff }}" style="{{ resetStyle }}">↺ Reset</div>
         </div>
 
         <!-- reveal moment overlay (covers the stage area) -->
@@ -701,7 +699,7 @@ The simulation renders this literally. Multiple wave sources generate overlappin
       reset: () => this.doReset(),
       resetHoverOn: () => this.setState({ resetHover: true }),
       resetHoverOff: () => this.setState({ resetHover: false }),
-      resetStyle: `position:absolute; top:10px; right:10px; z-index:6; font-size:12px; color:var(--accent); border:1px solid var(--accent); background:${s.resetHover ? 'var(--accent-dim)' : 'rgba(6,6,12,0.45)'}; border-radius:6px; padding:5px 12px; cursor:pointer; white-space:nowrap; transition:background 0.15s;`,
+      resetStyle: `align-self:flex-end; font-size:12px; color:${s.resetHover ? 'var(--accent)' : 'var(--muted)'}; border:0.5px solid ${s.resetHover ? 'var(--accent)' : 'var(--border)'}; border-radius:16px; padding:7px 14px; cursor:pointer; white-space:nowrap; transition:color 0.15s, border-color 0.15s;`,
 
       overlayOpen: onCard && s.overlayOpen,
       closeOverlay: () => this.setState({ overlayOpen: false }),
