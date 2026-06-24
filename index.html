@@ -10,7 +10,7 @@
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body { height: 100%; background: #0A0A0A; font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
@@ -28,6 +28,9 @@
   }
   #hp-root input[type=range]{ -webkit-appearance:none; appearance:none; height:3px; border-radius:2px; background:#333; accent-color:#00E5FF; cursor:pointer; }
   #hp-root input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:13px; height:13px; border-radius:50%; background:#00E5FF; cursor:pointer; }
+  .hp-read-body::-webkit-scrollbar { width: 8px; }
+  .hp-read-body::-webkit-scrollbar-thumb { background: rgba(120,120,130,0.35); border-radius: 4px; }
+  .hp-read-body::-webkit-scrollbar-track { background: transparent; }
   @keyframes hp-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
   @keyframes hp-backdrop { from { opacity: 0; } to { opacity: 1; } }
   @keyframes hp-rise { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -36,45 +39,45 @@
 
 <div id="hp-root" data-theme="{{ theme }}" style="position:fixed; inset:0; background:var(--bg); overflow:hidden; transition:background 0.3s;">
 
-  <!-- ============ HOME SCREEN ============ -->
+  <!-- ============ HOME SCREEN (Landing 2 · left intro column) ============ -->
   <sc-if value="{{ onHome }}" hint-placeholder-val="{{ true }}">
-    <div style="position:absolute; inset:0; display:flex; flex-direction:column;">
+    <div style="position:absolute; inset:0; display:flex;">
 
-      <!-- header -->
-      <div style="height:64px; flex:none; display:flex; align-items:center; padding:0 32px; background:var(--bar);">
-        <div style="flex:1; display:flex; flex-direction:column; justify-content:center;">
-          <div style="font-weight:600; font-size:20px; color:var(--text); line-height:1.1;">Hidden Patterns</div>
-          <div style="font-weight:400; font-size:13px; color:var(--accent); margin-top:3px;">Find the algorithm hiding in the artwork.</div>
-        </div>
-        <div onClick="{{ toggleTheme }}" style="{{ togStyle }}">{{ togLabel }}</div>
-      </div>
-      <div style="height:0; border-top:0.5px solid var(--hair); flex:none;"></div>
-
-      <!-- card grid -->
-      <div style="flex:1; display:flex; align-items:center; padding:0 32px;">
-        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:24px; width:100%;">
-          <sc-for list="{{ cards }}" as="card" hint-placeholder-count="3">
-            <div onClick="{{ card.open }}" onMouseEnter="{{ card.hoverOn }}" onMouseLeave="{{ card.hoverOff }}"
-                 style="{{ card.shellStyle }}">
-              <div style="position:relative; width:100%; aspect-ratio:16/9; background-color:var(--canvas); display:flex; align-items:center; justify-content:center; border-radius:10px 10px 0 0; overflow:hidden;">
-                <img src="{{ card.img }}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block;" />
-                <sc-if value="{{ card.visited }}" hint-placeholder-val="{{ false }}">
-                  <span style="position:absolute; top:10px; right:12px; font-size:13px; color:#00E5FF; z-index:1;">✓</span>
-                </sc-if>
-              </div>
-              <div style="height:80px; padding:14px 16px; display:flex; flex-direction:column; justify-content:center;">
-                <div style="font-weight:600; font-size:14px; color:var(--text);">{{ card.title }}</div>
-                <div style="font-weight:400; font-size:12px; color:var(--muted); margin-top:4px;">{{ card.meta }}</div>
-              </div>
+      <!-- left intro column -->
+      <div style="width:520px; flex:none; padding:54px 56px; display:flex; flex-direction:column; justify-content:center; border-right:0.5px solid var(--hair); background:var(--bar);">
+        <div style="font-weight:600; font-size:32px; color:var(--text); line-height:1.05; letter-spacing:-0.01em;">Hidden Patterns</div>
+        <div style="font-size:15px; color:var(--accent); margin-top:8px;">Find the algorithm hiding in the artwork.</div>
+        <div style="font-family:'Newsreader',serif; font-size:18px; line-height:1.6; color:var(--text-dim); margin-top:26px;">Three famous paintings, each secretly driven by an algorithm. Watch the motion, guess the rule that creates it — then reveal the answer and tweak it yourself.</div>
+        <div style="display:flex; flex-direction:column; gap:16px; margin-top:32px;">
+          <sc-for list="{{ steps }}" as="st" hint-placeholder-count="3">
+            <div style="display:flex; align-items:center; gap:13px;">
+              <span style="width:26px; height:26px; flex:none; border-radius:50%; border:1px solid var(--accent); color:var(--accent); font-size:13px; display:flex; align-items:center; justify-content:center;">{{ st.n }}</span>
+              <span style="font-size:14.5px; color:var(--text-dim);">{{ st.label }}</span>
             </div>
           </sc-for>
         </div>
+        <div style="font-weight:400; font-size:11px; color:var(--foot); letter-spacing:0.04em; margin-top:44px;">KCS CompSci Curiosity Day '26</div>
       </div>
 
-      <!-- footer -->
-      <div style="flex:none; padding-bottom:24px; display:flex; flex-direction:column; align-items:center; gap:8px;">
-        <div style="font-weight:400; font-size:12px; color:var(--foot);">Choose an artwork to begin.</div>
-        <div style="font-weight:400; font-size:11px; color:var(--foot); letter-spacing:0.04em; opacity:0.8;">KCS CompSci Curiosity Day '26</div>
+      <!-- right works list -->
+      <div style="flex:1; position:relative; padding:32px 40px; display:flex; flex-direction:column; justify-content:center; gap:16px;">
+        <div onClick="{{ toggleTheme }}" style="position:absolute; top:20px; right:24px; {{ togStyle }}">{{ togLabel }}</div>
+        <sc-for list="{{ cards }}" as="card" hint-placeholder-count="3">
+          <div onClick="{{ card.open }}" onMouseEnter="{{ card.hoverOn }}" onMouseLeave="{{ card.hoverOff }}"
+               style="{{ card.rowStyle }}">
+            <div style="position:relative; width:150px; aspect-ratio:16/10; flex:none; border-radius:6px; overflow:hidden; background-color:var(--canvas);">
+              <img src="{{ card.img }}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block;" />
+            </div>
+            <div style="flex:1;">
+              <div style="font-weight:600; font-size:16px; color:var(--text);">{{ card.title }}</div>
+              <div style="font-weight:400; font-size:13px; color:var(--muted); margin-top:4px;">{{ card.meta }}</div>
+            </div>
+            <sc-if value="{{ card.visited }}" hint-placeholder-val="{{ false }}">
+              <span style="font-size:13px; color:var(--accent); flex:none;">✓</span>
+            </sc-if>
+            <span style="font-size:18px; color:var(--accent); flex:none;">→</span>
+          </div>
+        </sc-for>
       </div>
     </div>
   </sc-if>
@@ -85,9 +88,11 @@
 
       <!-- top bar -->
       <div style="height:44px; flex:none; display:flex; align-items:center; padding:0 18px; background:var(--bar); border-bottom:0.5px solid var(--hair);">
-        <div onClick="{{ goHome }}" onMouseEnter="{{ backHoverOn }}" onMouseLeave="{{ backHoverOff }}"
-             style="{{ backStyle }}">← all artworks</div>
-        <div style="flex:1; text-align:center; font-weight:400; font-size:13px; color:var(--muted);">{{ current.crumb }}</div>
+        <div style="flex:1; display:flex; align-items:baseline; gap:12px;">
+          <span onClick="{{ goHome }}" onMouseEnter="{{ backHoverOn }}" onMouseLeave="{{ backHoverOff }}"
+                style="{{ backStyle }}">← Hidden Patterns</span>
+          <span style="font-weight:400; font-size:13px; color:var(--muted);">Find the algorithm hiding in the artwork</span>
+        </div>
         <div onClick="{{ toggleTheme }}" style="{{ togStyleSm }}">{{ togLabel }}</div>
       </div>
 
@@ -117,7 +122,11 @@
             </sc-for>
           </div>
         </div>
+        <div onClick="{{ reset }}" onMouseEnter="{{ resetHoverOn }}" onMouseLeave="{{ resetHoverOff }}" style="{{ resetStyle }}">↺ Reset</div>
       </div>
+
+      <!-- body: stage (left) + docked reading drawer (right) -->
+      <div style="flex:1; display:flex; min-height:0;">
 
       <!-- stage area: centres the framed artwork -->
       <div style="flex:1; position:relative; display:flex; align-items:center; justify-content:center; padding:28px; background:var(--bg); min-height:0;">
@@ -138,9 +147,6 @@
               <span style="font-weight:400; font-size:15px; color:#00E5FF; background:rgba(6,6,12,0.55); padding:8px 16px; border-radius:20px;">{{ current.instruction }}</span>
             </div>
           </sc-if>
-
-          <!-- reset: re-seed particles / clear rocks & taps -->
-          <div onClick="{{ reset }}" onMouseEnter="{{ resetHoverOn }}" onMouseLeave="{{ resetHoverOff }}" style="{{ resetStyle }}">↺ Reset</div>
         </div>
 
         <!-- reveal moment overlay (covers the stage area) -->
@@ -158,6 +164,27 @@
           </div>
         </sc-if>
       </div>
+      <!-- end stage area -->
+
+        <!-- reading drawer (docked, always visible — optional, not gated behind Reveal) -->
+        <div style="width:440px; flex:none; background:var(--surface); border-left:0.5px solid var(--border); display:flex; flex-direction:column;">
+          <div style="flex:none; padding:22px 30px 0;">
+            <div style="font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); margin-bottom:8px;">Read about this work</div>
+            <div style="font-size:21px; font-weight:600; color:var(--text); letter-spacing:-0.01em;">{{ current.title }}</div>
+            <div style="display:flex; gap:26px; margin-top:18px;">
+              <sc-for list="{{ readingTabs }}" as="tab" hint-placeholder-count="3">
+                <div onClick="{{ tab.select }}" style="{{ tab.style }}">{{ tab.label }}</div>
+              </sc-for>
+            </div>
+            <div style="height:0; border-top:0.5px solid var(--hair); margin-top:14px;"></div>
+          </div>
+          <div class="hp-read-body" style="flex:1; min-height:0; overflow-y:auto; padding:24px 30px 32px;">
+            <div style="font-family:'Newsreader',serif; font-size:16.5px; line-height:1.72; color:var(--text); white-space:pre-line;">{{ readingBody }}</div>
+          </div>
+        </div>
+
+      </div>
+      <!-- end body flex -->
 
       <!-- bottom bar -->
       <div style="height:64px; flex:none; display:flex; align-items:center; justify-content:center; padding:0 24px; background:var(--bar); border-top:0.5px solid var(--hair);">
@@ -166,29 +193,8 @@
                style="{{ revealBtnStyle }}">Reveal it →</div>
         </sc-if>
         <sc-if value="{{ postReveal }}" hint-placeholder-val="{{ false }}">
-          <div style="display:flex; align-items:center; gap:22px;">
-            <div onClick="{{ openOverlay }}" style="font-size:13px; color:#FFB300; cursor:pointer; border-bottom:0.5px solid rgba(255,179,0,0.5); padding-bottom:1px;">↺ Read the reveal</div>
-            <div onClick="{{ toggleInfo }}" onMouseEnter="{{ infoHoverOn }}" onMouseLeave="{{ infoHoverOff }}" style="{{ infoLinkStyle }}">Learn more →</div>
-          </div>
+          <div onClick="{{ openOverlay }}" style="font-size:13px; color:#FFB300; cursor:pointer; border-bottom:0.5px solid rgba(255,179,0,0.5); padding-bottom:1px;">↺ Read the reveal</div>
         </sc-if>
-      </div>
-
-      <!-- info drawer (post-reveal, optional) -->
-      <div style="{{ infoDrawerStyle }}">
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:18px;">
-          <span style="font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--accent);">{{ current.algoName }}</span>
-          <div onClick="{{ toggleInfo }}" style="font-size:18px; line-height:1; color:var(--muted); cursor:pointer; padding:2px 4px;">×</div>
-        </div>
-        <p style="font-size:14px; line-height:1.6; color:var(--text); margin-bottom:22px;">{{ current.about }}</p>
-        <div style="height:0; border-top:0.5px solid var(--hair); margin-bottom:20px;"></div>
-        <div style="display:flex; flex-direction:column; gap:16px;">
-          <sc-for list="{{ current.facts }}" as="fact" hint-placeholder-count="3">
-            <div style="display:flex; gap:10px;">
-              <span style="color:var(--accent); flex:none; font-size:13px;">—</span>
-              <span style="font-size:13px; line-height:1.55; color:var(--text-dim);">{{ fact }}</span>
-            </div>
-          </sc-for>
-        </div>
       </div>
     </div>
   </sc-if>
@@ -210,6 +216,9 @@ class Component extends DCLogic {
     togHover: false,
     infoOpen: false,
     infoHover: false,
+    readingOpen: false,
+    readingTab: 'artist',
+    readToggleHover: false,
     resetHover: false,
     overlayOpen: false,
     artOpacity: 0.3,
@@ -236,6 +245,30 @@ class Component extends DCLogic {
         'In 2024 researchers measured the brushstroke swirls in the real painting and found they match the statistics of true turbulent flow.',
         'The same flow-field technique drives smoke, fire and cloth in films and games.',
       ],
+      // ↓↓↓ READING DRAWER TEXTS — replace each with your ~1000-word piece. Use \n\n for paragraph breaks. ↓↓↓
+      artist: `Vincent van Gogh painted The Starry Night in June 1889, from a room in the asylum at Saint-Rémy-de-Provence, where he had admitted himself the previous month. The view through the barred window — a line of hills, a single cypress, a village that was partly invented — became one of the most recognised images ever made.
+
+He worked fast and physically, loading the brush so thickly that the paint stands proud of the canvas in ridges you can still see today. The swirls in the sky were not copied from anything he observed. They came from the way he felt the night: restless, alive, and vast.
+
+Van Gogh was largely self-taught. He began painting seriously only at 27, after a failed attempt to become a lay preacher in the Belgian coalfields. He sold one painting in his lifetime. He died the following year, aged 37.
+
+What he left behind — over 850 paintings in roughly a decade — shaped the course of modern art. It also, as it turns out, contained something that physicists would not be able to describe mathematically for another century.`,
+      painting: `The sky in The Starry Night is not a sky anyone has ever seen. Van Gogh did not paint what was outside his window; he painted what the night felt like from inside it — churning, spiralling, almost liquid.
+
+The technique is called impasto: thick, directional strokes applied with force, each one leaving a physical ridge on the surface. Stand close to the original in MoMA, New York, and the canvas reads almost like a relief sculpture. The brushwork does not describe light. It enacts movement.
+
+The composition divides into three zones: the turbulent sky, which dominates the canvas; the dark vertical thrust of the cypress on the left, which anchors the whole thing; and the quiet village below, painted with shorter, calmer strokes. The contrast is deliberate. The village sleeps. The sky does not.
+
+Van Gogh had studied Japanese woodblock prints obsessively, particularly Hokusai's use of bold curving lines to suggest natural forces. That influence is visible in the sky: not a photograph of cloud, but a diagram of energy.`,
+      algorithm: `The particles on screen are following a flow field: a grid of invisible arrows covering the canvas, each one pointing in a direction calculated by a mathematical function called Perlin noise.
+
+Perlin noise was developed by Ken Perlin in 1983 to generate natural-looking textures in computer graphics. Unlike pure random noise, it changes gradually. Neighbouring points in the grid point in similar directions, which is why the particles curve and swirl rather than scatter. The turbulence slider controls how sharply those directions change across the grid. Turn it up and the flow fractures into chaos. Turn it down and the particles travel in long, smooth arcs.
+
+In 2006, a team of physicists analysed the brushwork in The Starry Night using the mathematics of fluid dynamics. They found that the patterns in Van Gogh's sky match the statistical signature of Kolmogorov turbulence with striking precision. Kolmogorov turbulence describes how energy moves through a turbulent fluid, cascading from large swirls down to progressively smaller ones. The scaling relationship between vortex sizes in Van Gogh's brushstrokes follows the same power law as turbulent flow in rivers, clouds, and the atmosphere.
+
+Paintings from his more stable periods do not show this pattern. Only the work produced during the most intense episodes does.
+
+Van Gogh had no knowledge of fluid dynamics. He painted what he saw and felt, and encoded a mathematical structure that the physics of his era could not yet describe. The flow field on screen is the algorithm that gets closest to recreating it. Adjust the turbulence slider and watch how the behaviour changes.`,
     },
     {
       title: 'The Great Wave', meta: 'Hokusai · 1831',
@@ -251,6 +284,29 @@ class Component extends DCLogic {
         'Rerouting flow around obstacles is exactly how engineers simulate rivers, wind tunnels and aircraft wings.',
         'Hokusai made this print around 1831; it has since become one of the most reproduced images on Earth.',
       ],
+      artist: `Katsushika Hokusai was born in Edo — now Tokyo — in 1760, and spent his entire working life there. He was prolific to an unusual degree, producing an estimated 30,000 works across painting, woodblock printing, and illustration. He changed his artist's name at least 30 times, a practice he used to mark new phases of his development. At 75, he wrote that everything he had produced before the age of 70 was worthless.
+
+He worked in the tradition of ukiyo-e — woodblock printing — a form designed for mass production and wide distribution. Prints were not prestige objects. They were affordable, popular, and sold in their thousands. Hokusai's most famous series, Thirty-six Views of Mount Fuji, was produced between 1830 and 1833, when he was in his seventies.
+
+He died in 1849, aged 88 or 89. His last recorded words were a complaint that if he had lived another five years he might have become a real painter.
+
+When Japan reopened to international trade in the late nineteenth century, ukiyo-e prints reached Europe in large quantities. The effect on Western art was immediate. Van Gogh, Monet, Degas, and Toulouse-Lautrec all collected them. The bold outlines, flattened perspective, and use of strong colour to carry emotion rather than describe light changed the way European artists thought about what a picture could do. That current runs directly through the Starry Night in this exhibit.`,
+      painting: `The Great Wave off Kanagawa was published in 1831 as the first print in Thirty-six Views of Mount Fuji. Mount Fuji is visible in the background, small and calm, dwarfed by the wave. That contrast — the permanent mountain against the momentary water — is the structural argument of the image.
+
+The wave itself is not straightforwardly realistic. Physicists who have analysed the print believe it depicts a rogue wave: a rare oceanic phenomenon produced by wave interference, in which multiple waves arrive simultaneously in phase, their displacements adding together to produce a single peak far larger than any individual wave. Rogue waves were considered sailors' mythology until the 1990s, when the first scientific measurements confirmed they exist. Hokusai captured one in woodblock in 1831.
+
+The forward curl of the wave also encodes real fluid physics. The white claws at the crest are not decorative. They describe the moment of breaking, when the wave top outruns the body beneath it. The spray fragments into droplets that Hokusai renders with extraordinary precision — each one following a ballistic arc that holds up to modern analysis.
+
+The boats beneath the wave are not being swamped. They are angled to run with it. The figures inside are flat to the hull. This is not panic; it is technique. Hokusai knew what experienced sailors do in heavy water.`,
+      algorithm: `The particles in this simulation are driven by a tiled directional flow field — an algorithm that divides the canvas into a grid of cells, assigns each cell a flow direction, and blends the boundaries between adjacent cells to produce continuous, curving motion.
+
+The core problem it solves is this: if you assign a different flow direction to every pixel independently, the result is visual noise. Nothing flows; everything fractures. The tiled approach groups pixels into regions that share a direction, which keeps the motion coherent. The blending step then hides the grid boundaries, so the transitions between directions read as smooth curves rather than sharp edges.
+
+The wave physics in Hokusai's print involves two distinct phenomena. The first is wave interference: the rogue wave is produced by multiple wave trains arriving in phase, their amplitudes combining into a single outsized peak. The second is Stokes drift, described mathematically by G.G. Stokes in 1847. Water particles in a wave do not travel in straight lines; they move in tight orbits, faster at the crest than at the trough. That asymmetry produces a net forward movement in the direction of wave travel — the surging momentum Hokusai depicts in the curl.
+
+The simulation captures the first of these directly. The flow field tiles produce interference-like patterns when neighbouring cells point in converging directions, generating peaks where flow concentrates. The speed slider controls how fast particles move through the field; at higher speeds the curl at the wave crest becomes visible as particles bunch and accelerate. The turbulence slider introduces disorder into the cell directions, breaking the clean wave structure into choppier, more chaotic water.
+
+Hokusai worked from observation and instinct. The physics he depicted — rogue wave formation, Stokes drift, the ballistic arc of breaking spray — was not formally described until decades after his death. The algorithm replicates the visual result. The underlying mathematics turns out to be the same.`,
     },
     {
       title: 'The Scream', meta: 'Munch · 1893',
@@ -266,6 +322,27 @@ class Component extends DCLogic {
         'The same maths describes ripples on a pond, the noise-cancelling in your headphones, and the interference fringes that first proved light travels as a wave.',
         "Munch said the blood-red sky over Oslo made him feel nature itself was screaming — here that scream spreads outward as overlapping waves.",
       ],
+      artist: `Edvard Munch was born in Norway in 1863 into a family marked by illness and early death. His mother died of tuberculosis when he was five. His favourite sister died of the same disease nine years later. A second sister was diagnosed with schizophrenia. His father suffered from severe religious anxiety that Munch described as bordering on psychosis. By the time he was a young man, he had concluded that what he had inherited was not talent but damage, and that painting was what he would do with it.
+
+He was not interested in depicting the visible world. His stated ambition was to paint the most subtle states of mind — grief, desire, anxiety, the particular quality of loneliness in a crowd. He grouped his major works into a thematic cycle called The Frieze of Life, organised around four subjects: the awakening of love, the blossoming and dissolution of love, anxiety, and death. He returned to the same motifs repeatedly across decades, in oil, pastel, and print.
+
+Munch suffered a nervous breakdown in 1908 and spent eight months in a clinic in Copenhagen. After his recovery his work became calmer and more expansive, though never entirely free of the earlier darkness. He died in 1944, aged 80, having outlived most of the Expressionist movement his early work had helped create.`,
+      painting: `The Scream exists in four versions — two in oil and two in pastel — produced between 1893 and 1910. The image Munch returned to was always the same: a figure on a bridge at sunset, the landscape dissolved into bands of colour, the sky blood red and churning.
+
+The inspiration came from a walk along a road above Oslo in the early 1890s. Munch recorded in his diary that the sun was setting and the sky suddenly turned the colour of blood. He felt an overwhelming sensation — not a sound exactly, but something he described as an infinite scream passing through nature. The figure in the painting is not screaming. Munch was explicit about this: the figure is pressing its hands over its ears to block out a scream it can hear in the environment around it.
+
+The composition is built around a deliberate structural tension. The bridge drives diagonally into the background, its hard straight lines pulling the eye away from the figure. The sky and water push back with curving, undulating bands of colour that return attention to the centre. That push and pull — geometry against wave, stillness against motion — is not accidental. It is how Munch makes you feel what the figure is feeling.
+
+One version of the painting carries a faint pencil inscription in the sky. Infrared analysis confirmed it was written by Munch himself: a response to critics who had questioned his sanity. The cadmium yellow he used for the sunset is chemically unstable; in the versions held in Oslo, those areas are slowly fading to ivory white. The painting is changing.`,
+      algorithm: `The particles in this simulation follow wave superposition — the mathematical principle that describes what happens when two or more waves occupy the same space simultaneously.
+
+Waves are not solid objects. They are disturbances that travel through a medium, and when they meet, their values add together algebraically at every point. If two wave crests coincide — both waves in phase at the same location — their amplitudes combine to produce a larger peak. This is constructive interference. If a crest meets a trough, they cancel. This is destructive interference. The result, across a surface where multiple waves are travelling, is a stable pattern of alternating peaks and nulls: an interference pattern.
+
+In optics this produces visible fringes — alternating bands of bright and dark. In sound it produces what physicists call acoustical beats: when two tones of slightly different frequencies play simultaneously, their waves drift in and out of phase over time, producing a rhythmic pulse of volume, loud then soft, loud then soft, at a rate equal to the difference between the two frequencies. You have heard this as the wavering sound of two instruments slightly out of tune.
+
+Munch's sky is structured as an interference pattern. The alternating bands of red and dark blue, the undulating rhythm across the canvas, the sense of the landscape vibrating — these are not purely expressive choices. They map directly onto the visual signature of wave superposition. He painted a sound wave oscillating through the air, which is precisely what he described: not a man screaming, but a man overwhelmed by a scream in the environment itself.
+
+The simulation renders this literally. Multiple wave sources generate overlapping fields; the particle movement reflects the combined displacement at each point. The turbulence slider introduces phase variation between the wave sources, shifting the interference pattern from regular and rhythmic to broken and chaotic. Turn it to maximum and the orderly bands collapse. That, in physical terms, is what noise is.`,
     },
   ];
 
@@ -488,7 +565,7 @@ class Component extends DCLogic {
   componentWillUnmount() { this.stopSim(); }
 
   openCard(i) {
-    this.setState({ screen: 'card', activeIdx: i, interacted: false, revealed: false, overlayOpen: false, artOpacity: 0.3, infoOpen: false, particleColor: this.DATA[i].color || '#00E5FF' }, () => {
+    this.setState({ screen: 'card', activeIdx: i, interacted: false, revealed: false, overlayOpen: false, artOpacity: 0.3, infoOpen: false, readingOpen: false, readingTab: 'artist', particleColor: this.DATA[i].color || '#00E5FF' }, () => {
       setTimeout(() => this.startSim(), 0);
     });
   }
@@ -556,7 +633,26 @@ class Component extends DCLogic {
         open: () => this.openCard(i),
         hoverOn: () => this.setState({ hoverIdx: i }),
         hoverOff: () => this.setState({ hoverIdx: -1 }),
-        shellStyle: `background:var(--card); border:${border}; border-radius:10px; cursor:pointer; overflow:hidden; transition:border-color 0.15s;`,
+        rowStyle: `display:flex; align-items:center; gap:18px; background:var(--card); border:${border}; border-radius:10px; padding:14px; cursor:pointer; transition:border-color 0.15s;`,
+      };
+    });
+
+    const steps = [
+      { n: '1', label: 'Watch the motion' },
+      { n: '2', label: 'Guess the algorithm' },
+      { n: '3', label: 'Reveal & tweak it' },
+    ];
+
+    const readingTabs = [
+      { key: 'artist', label: 'The artist' },
+      { key: 'painting', label: 'The painting' },
+      { key: 'algorithm', label: 'The algorithm' },
+    ].map(t => {
+      const active = s.readingTab === t.key;
+      return {
+        label: t.label,
+        select: () => this.setState({ readingTab: t.key }),
+        style: `font-size:13px; padding:8px 4px; margin-bottom:-0.5px; cursor:pointer; border-bottom:1.5px solid ${active ? 'var(--accent)' : 'transparent'}; color:${active ? 'var(--accent)' : 'var(--muted)'}; transition:color 0.15s;`,
       };
     });
 
@@ -596,16 +692,14 @@ class Component extends DCLogic {
         style: `width:22px; height:22px; border-radius:50%; cursor:pointer; background:${hex}; border:2px solid ${s.particleColor === hex ? '#FFFFFF' : 'transparent'}; box-shadow:0 0 6px ${hex};`,
       })),
 
-      toggleInfo: () => this.setState({ infoOpen: !s.infoOpen }),
-      infoHoverOn: () => this.setState({ infoHover: true }),
-      infoHoverOff: () => this.setState({ infoHover: false }),
-      infoLinkStyle: `font-weight:400; font-size:13px; cursor:pointer; white-space:nowrap; color:${s.infoHover ? '#FFFFFF' : 'var(--accent)'}; border-bottom:0.5px solid ${s.infoHover ? '#FFFFFF' : 'var(--accent)'}; padding-bottom:1px; transition:color 0.15s, border-color 0.15s;`,
-      infoDrawerStyle: `position:absolute; top:44px; bottom:0; right:0; width:340px; background:var(--surface); border-left:0.5px solid var(--border); padding:24px 26px; overflow-y:auto; transform:translateX(${s.infoOpen ? '0' : '100%'}); transition:transform 0.35s ease; z-index:5;`,
+      steps,
+      readingTabs,
+      readingBody: cur[s.readingTab],
 
       reset: () => this.doReset(),
       resetHoverOn: () => this.setState({ resetHover: true }),
       resetHoverOff: () => this.setState({ resetHover: false }),
-      resetStyle: `position:absolute; top:10px; right:10px; z-index:6; font-size:12px; color:var(--accent); border:1px solid var(--accent); background:${s.resetHover ? 'var(--accent-dim)' : 'rgba(6,6,12,0.45)'}; border-radius:6px; padding:5px 12px; cursor:pointer; white-space:nowrap; transition:background 0.15s;`,
+      resetStyle: `align-self:flex-end; font-size:12px; color:${s.resetHover ? 'var(--accent)' : 'var(--muted)'}; border:0.5px solid ${s.resetHover ? 'var(--accent)' : 'var(--border)'}; border-radius:16px; padding:7px 14px; cursor:pointer; white-space:nowrap; transition:color 0.15s, border-color 0.15s;`,
 
       overlayOpen: onCard && s.overlayOpen,
       closeOverlay: () => this.setState({ overlayOpen: false }),
