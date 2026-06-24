@@ -275,9 +275,29 @@ class Component extends DCLogic {
 
   TEXT = {
     0: [
-      '[ Artist — Vincent van Gogh. Paste the ~1000-word piece here. Blank lines become paragraph breaks. ]',
-      '[ Painting — The Starry Night. Paste the ~1000-word piece here. ]',
-      '[ Algorithm — Flow field / Perlin noise. Paste the ~1000-word piece here. ]',
+      `Vincent van Gogh painted The Starry Night in June 1889, from a room in the asylum at Saint-Rémy-de-Provence, where he had admitted himself the previous month. The view through the barred window — a line of hills, a single cypress, a village that was partly invented — became one of the most recognised images ever made.
+
+He worked fast and physically, loading the brush so thickly that the paint stands proud of the canvas in ridges you can still see today. The swirls in the sky were not copied from anything he observed. They came from the way he felt the night: restless, alive, and vast.
+
+Van Gogh was largely self-taught. He began painting seriously only at 27, after a failed attempt to become a lay preacher in the Belgian coalfields. He sold one painting in his lifetime. He died the following year, aged 37.
+
+What he left behind — over 850 paintings in roughly a decade — shaped the course of modern art. It also, as it turns out, contained something that physicists would not be able to describe mathematically for another century.`,
+      `The sky in The Starry Night is not a sky anyone has ever seen. Van Gogh did not paint what was outside his window; he painted what the night felt like from inside it — churning, spiralling, almost liquid.
+
+The technique is called impasto: thick, directional strokes applied with force, each one leaving a physical ridge on the surface. Stand close to the original in MoMA, New York, and the canvas reads almost like a relief sculpture. The brushwork does not describe light. It enacts movement.
+
+The composition divides into three zones: the turbulent sky, which dominates the canvas; the dark vertical thrust of the cypress on the left, which anchors the whole thing; and the quiet village below, painted with shorter, calmer strokes. The contrast is deliberate. The village sleeps. The sky does not.
+
+Van Gogh had studied Japanese woodblock prints obsessively, particularly Hokusai's use of bold curving lines to suggest natural forces. That influence is visible in the sky: not a photograph of cloud, but a diagram of energy.`,
+      `The particles on screen are following a flow field: a grid of invisible arrows covering the canvas, each one pointing in a direction calculated by a mathematical function called Perlin noise.
+
+Perlin noise was developed by Ken Perlin in 1983 to generate natural-looking textures in computer graphics. Unlike pure random noise, it changes gradually. Neighbouring points in the grid point in similar directions, which is why the particles curve and swirl rather than scatter. The turbulence slider controls how sharply those directions change across the grid. Turn it up and the flow fractures into chaos. Turn it down and the particles travel in long, smooth arcs.
+
+In 2006, a team of physicists analysed the brushwork in The Starry Night using the mathematics of fluid dynamics. They found that the patterns in Van Gogh's sky match the statistical signature of Kolmogorov turbulence with striking precision. Kolmogorov turbulence describes how energy moves through a turbulent fluid, cascading from large swirls down to progressively smaller ones. The scaling relationship between vortex sizes in Van Gogh's brushstrokes follows the same power law as turbulent flow in rivers, clouds, and the atmosphere.
+
+Paintings from his more stable periods do not show this pattern. Only the work produced during the most intense episodes does.
+
+Van Gogh had no knowledge of fluid dynamics. He painted what he saw and felt, and encoded a mathematical structure that the physics of his era could not yet describe. The flow field on screen is the algorithm that gets closest to recreating it. Adjust the turbulence slider and watch how the behaviour changes.`,
     ],
     1: [
       '[ Artist — Katsushika Hokusai. Paste the ~1000-word piece here. ]',
